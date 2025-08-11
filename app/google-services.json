@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "631952162120",
+    "project_id": "x-step-7e6f6",
+    "storage_bucket": "x-step-7e6f6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631952162120:android:c09cd4e1ae90f7b3a9477d",
+        "android_client_info": {
+          "package_name": "com.service.x_step"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVj9pN7m3DLNaaBP0rfmHPzqGNkihzWk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

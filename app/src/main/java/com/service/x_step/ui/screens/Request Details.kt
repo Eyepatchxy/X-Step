@@ -1,0 +1,290 @@
+package com.service.x_step.ui.screens
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.google.firebase.firestore.FirebaseFirestore
+import com.service.x_step.Request
+import com.service.x_step.ui.theme.FontBlue
+import com.service.x_step.ui.theme.backGradient
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RequestDetails(
+    reqId : String,
+    navController: NavController
+) {
+
+    var request by remember { mutableStateOf<Request?>(null) }
+    var errormessage by remember { mutableStateOf("") }
+
+    LaunchedEffect(reqId) {
+        fetchrequestbyid(reqId) { req ->
+            request = req
+        }
+    }
+
+    request?.let { req ->
+        var tripId = req.tripId
+
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Details"
+                    )
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navController.navigate("requestlist/${tripId}") }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowLeft,
+                            contentDescription = "Trip List",
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = { navController.navigate("profile") }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "Profile",
+                            modifier = Modifier.size(50.dp)
+                        )
+                    }
+                }
+            )
+        }
+    ) { innerpadding ->
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerpadding)
+                .verticalScroll(rememberScrollState())
+                .background(backGradient),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+
+            HorizontalDivider(
+                color = FontBlue,
+                thickness = 2.dp
+            )
+
+            request.let { req ->
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(50.dp),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    Spacer(modifier = Modifier.padding(15.dp))
+
+                    req?.item?.let {
+                        Text(
+                            text = it,
+                            fontSize = 35.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.padding(15.dp))
+
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+
+                        Row {
+                            Text("Description :")
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            Text("${request!!.itemDesc}")
+
+                            Spacer(modifier = Modifier.padding(15.dp))
+                        }
+
+
+                        Row {
+                            Text("Estimated Cost :")
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            Text("${request!!.cost}")
+
+                            Spacer(modifier = Modifier.padding(15.dp))
+                        }
+
+
+                        Row {
+                            Text("Pickup Location :")
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            Text("${request!!.pickupLoc}")
+
+                            Spacer(modifier = Modifier.padding(15.dp))
+                        }
+
+                        Row {
+                            Text("Item Size :")
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            Text("${request!!.itemSize}")
+
+                            Spacer(modifier = Modifier.padding(15.dp))
+                        }
+
+
+                        if (request?.status == true) {
+                            Row {
+                                Text("Status :")
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                Text(
+                                    text = "Confirmed",
+                                    color = Color.Green
+                                )
+
+                                Spacer(modifier = Modifier.padding(15.dp))
+                            }
+                        }
+                        if (request?.status == null) {
+                            Row {
+                                Text("Status :")
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                Text(
+                                    text = "Pending",
+                                    color = Color.Gray
+                                )
+
+                                Spacer(modifier = Modifier.padding(15.dp))
+                            }
+                        }
+                        if (request?.status == false) {
+                            Row {
+                                Text("Status :")
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                Text(
+                                    text = "Rejected",
+                                    color = Color.Red
+                                )
+
+                                Spacer(modifier = Modifier.padding(15.dp))
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.padding(25.dp))
+
+                        if ( req?.status == null ) {
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Button(
+                                    onClick = {
+                                        FirebaseFirestore.getInstance().collection("request")
+                                            .document(reqId)
+                                            .update("status", true)
+                                            .addOnSuccessListener {
+                                                navController.navigate("requestlist/${tripId}")
+                                            }
+                                            .addOnFailureListener { exception ->
+                                                errormessage = exception.message.toString()
+                                                navController.navigate("requestlist/${tripId}")
+                                            }
+                                        sendNotification(
+                                            token = req?.rqUser,
+                                            title = "Trip Confirmed",
+                                            body = "Your trip request has been accepted!"
+                                        )
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
+                                ) {
+                                    Text(
+                                        text = "Confirm"
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.padding(25.dp))
+
+                                Button(
+                                    onClick = {
+                                        FirebaseFirestore.getInstance().collection("request")
+                                            .document(reqId)
+                                            .update("status", false)
+                                            .addOnSuccessListener {
+                                                navController.navigate("requestlist/${tripId}")
+                                            }
+                                            .addOnFailureListener { exception ->
+                                                errormessage = exception.message.toString()
+                                                navController.navigate("requestlist/${tripId}")
+                                            }
+                                        sendNotification(
+                                            token = req?.rqUser,
+                                            title = "Trip Rejected",
+                                            body = "Sorry, your trip request was declined."
+                                        )
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                                ) {
+                                    Text("Reject")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
