@@ -15,8 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 val backGradient = Brush.verticalGradient(
-    colors = listOf(Color.White, GradBlue)
+    colors = listOf(Color.Black, GradBlue)
 )
+
+val scafColor = Color.Black
 
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF1976D2),

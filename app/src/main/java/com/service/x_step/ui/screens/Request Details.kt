@@ -23,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.service.x_step.Request
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
+import com.service.x_step.ui.theme.scafColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,6 +66,9 @@ fun RequestDetails(
     Scaffold(
         topBar = {
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = scafColor
+                ),
                 title = {
                     Text(
                         text = "Details"
@@ -76,7 +81,8 @@ fun RequestDetails(
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowLeft,
                             contentDescription = "Trip List",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            tint = Color.White
                         )
                     }
                 },
@@ -87,7 +93,8 @@ fun RequestDetails(
                         Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
-                            modifier = Modifier.size(50.dp)
+                            modifier = Modifier.size(50.dp),
+                            tint = Color.White
                         )
                     }
                 }

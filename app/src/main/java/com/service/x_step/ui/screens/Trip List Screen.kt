@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,6 +44,7 @@ import com.service.x_step.R
 import com.service.x_step.Trip
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
+import com.service.x_step.ui.theme.scafColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,8 +62,11 @@ fun TripListScreen(navController: NavController) {
     Scaffold (
         topBar = {
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = scafColor
+                ),
                 title = { Text(
-                    text = "Trip List",
+                    text = "Trip",
                     style = MaterialTheme.typography.titleLarge) },
 
                 actions = {
@@ -72,7 +77,8 @@ fun TripListScreen(navController: NavController) {
                         Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
-                            modifier = Modifier.size(50.dp)
+                            modifier = Modifier.size(50.dp),
+                            tint = Color.White
                         )
                     }
                 },
@@ -88,12 +94,12 @@ fun TripListScreen(navController: NavController) {
                         )
                     }
                 }
-
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate("postatrip")}
+                onClick = { navController.navigate("postatrip")},
+                containerColor = Color.White
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

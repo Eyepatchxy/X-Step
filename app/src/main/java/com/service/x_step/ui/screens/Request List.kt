@@ -27,6 +27,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,6 +44,7 @@ import androidx.navigation.NavController
 import com.service.x_step.Request
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
+import com.service.x_step.ui.theme.scafColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,6 +66,9 @@ fun RequestList(
     Scaffold (
         topBar = {
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = scafColor
+                ),
                 title = { Text(
                     text = "Requests",
                     style = MaterialTheme.typography.titleLarge) },
@@ -76,7 +81,8 @@ fun RequestList(
                         Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
-                            modifier = Modifier.size(50.dp)
+                            modifier = Modifier.size(50.dp),
+                            tint = Color.White
                         )
                     }
                 },
@@ -87,7 +93,8 @@ fun RequestList(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBackIos,
-                            contentDescription = "Trip List"
+                            contentDescription = "Trip List",
+                            tint = Color.White
                         )
                     }
                 }
