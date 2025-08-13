@@ -7,9 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,7 +19,6 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -33,6 +30,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,14 +46,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.translationMatrix
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.service.x_step.Trip
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
+import com.service.x_step.ui.theme.scafColor
 import kotlinx.coroutines.launch
+
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -95,6 +93,9 @@ fun PostATrip(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = scafColor
+                ),
                 title = { Text(
                     text = "Post A Trip",
                     style = MaterialTheme.typography.titleLarge
@@ -108,6 +109,7 @@ fun PostATrip(navController: NavController) {
                             imageVector = Icons.Default.ArrowBackIos,
                             contentDescription = "TripList",
                             modifier = Modifier.size(20.dp),
+                            tint = Color.White
                         )
                     }
                 },
@@ -120,6 +122,7 @@ fun PostATrip(navController: NavController) {
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
                             modifier = Modifier.size(50.dp),
+                            tint = Color.White
                         )
                     }
                 }
@@ -204,20 +207,17 @@ fun PostATrip(navController: NavController) {
                         onOptionSelected = { itemSize = it }
                     )
 
-                    toggleSwitch(
+                    /*toggleSwitch(
                         label = "Is this a return trip?",
                         checked = roundTrip,
                         onCheckedChange = { roundTrip = it }
-                    )
+                    )*/
 
                     toggleSwitch(
                         label = "Use default UPI Id?",
                         checked = show,
                         onCheckedChange = { show = it }
                     )
-
-
-
 
 
                     if (show){

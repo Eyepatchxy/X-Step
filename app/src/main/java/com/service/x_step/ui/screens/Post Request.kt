@@ -24,6 +24,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,6 +47,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.service.x_step.Trip
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
+import com.service.x_step.ui.theme.scafColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,6 +80,9 @@ fun PostRequest (
     Scaffold (
         topBar = {
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = scafColor
+                ),
                 title = {
                     Text("Request")
                 },
@@ -89,7 +94,8 @@ fun PostRequest (
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowLeft,
                             contentDescription = "Trip Details",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            tint = Color.White
                         )
                     }
                 },
@@ -100,7 +106,8 @@ fun PostRequest (
                         Icon(
                             imageVector = Icons.Default.AccountCircle,
                             contentDescription = "Profile",
-                            modifier = Modifier.size(50.dp)
+                            modifier = Modifier.size(50.dp),
+                            tint = Color.White
                         )
                     }
                 }

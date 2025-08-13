@@ -30,6 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,6 +49,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
+import com.service.x_step.ui.theme.scafColor
 import org.intellij.lang.annotations.JdkConstants.BoxLayoutAxis
 
 @SuppressLint("ResourceType")
@@ -96,6 +98,9 @@ fun Profile(navController: NavController){
     Scaffold (
         topBar = {
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = scafColor
+                ),
                 title = { Text("Profile") },
 
                 navigationIcon = {
@@ -105,7 +110,8 @@ fun Profile(navController: NavController){
                         Icon(
                             imageVector = Icons.Default.ArrowBackIosNew,
                             contentDescription = "Trip List",
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            tint = Color.White
                         )
                     }
                 }
