@@ -57,7 +57,7 @@ fun TripHistory(navController: NavController){
             }
         }
     }
-
+/*
     Scaffold (
         topBar = {
             TopAppBar(
@@ -97,20 +97,15 @@ fun TripHistory(navController: NavController){
             )
         }
     ){ innerpadding ->
-
+*/
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerpadding)
+                .padding(16.dp)
                 .background(backGradient),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
-            HorizontalDivider(
-                color = FontBlue,
-                thickness = 2.dp
-            )
 
             LazyColumn(
                 modifier = Modifier
@@ -162,4 +157,4 @@ fun TripHistory(navController: NavController){
             }
         }
     }
-}
+//}

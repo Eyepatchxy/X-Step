@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -123,8 +124,7 @@ fun TripDetails(
 
                     Text(
                         text = "${trip!!.to}",
-                        fontSize = 35.sp,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
 
                     Spacer(modifier = Modifier.padding(15.dp))
@@ -134,63 +134,63 @@ fun TripDetails(
                     ) {
 
                         Row() {
-                            Text("Starting from :")
+                            Text("Starting from :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${trip!!.from}")
+                            Text("${trip!!.from}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
 
 
                         Row() {
-                            Text("Date :")
+                            Text("Date :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${trip!!.date}")
+                            Text("${trip!!.date}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
 
 
                         Row() {
-                            Text("Starting Time :")
+                            Text("Starting Time :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${trip!!.starttime}")
+                            Text("${trip!!.starttime}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
 
                         Row() {
-                            Text("Be back by ")
+                            Text("Be back by ", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${trip!!.arrivaltime}")
+                            Text("${trip!!.arrivaltime}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
 
                         Row() {
-                            Text("Item Size :")
+                            Text("Item Size :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${trip!!.itemSize}")
+                            Text("${trip!!.itemSize}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
 
                         Row() {
-                            Text("Description :")
+                            Text("Description :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${trip!!.description}")
+                            Text("${trip!!.description}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }

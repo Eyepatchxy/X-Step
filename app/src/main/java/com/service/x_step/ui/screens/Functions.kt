@@ -3,6 +3,7 @@ package com.service.x_step.ui.screens
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -361,6 +362,10 @@ fun fetchtrips(
                 )
             }
             list(trips)
+            Log.d("FIREBASE", "Fetched: docs")
+        }
+        .addOnFailureListener { e ->
+            Log.e("FIREBASE", "Error fetching", e)
         }
 }
 
