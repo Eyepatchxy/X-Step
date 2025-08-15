@@ -85,7 +85,7 @@ fun TripListScreen(navController: NavController) {
 
                 navigationIcon = {
                     IconButton(
-                        onClick = { navController.navigate("history") }
+                        onClick = { navController.navigate("youractivity") }
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.triphistory),
