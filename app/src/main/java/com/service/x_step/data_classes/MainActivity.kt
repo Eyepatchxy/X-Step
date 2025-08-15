@@ -13,7 +13,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.service.x_step.ui.screens.EditProfile
 import com.service.x_step.ui.screens.ForgotPasswordScreen
-import com.service.x_step.ui.screens.HistoryScreen
 import com.service.x_step.ui.screens.LoginScreen
 import com.service.x_step.ui.screens.PostATrip
 import com.service.x_step.ui.screens.PostRequest
@@ -49,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     composable("postatrip") { PostATrip(navController) }
                     composable("profile") { Profile(navController) }
                     composable("editprofile") { EditProfile(navController) }
-                    composable("history") { HistoryScreen(navController) }
+//                    composable("history") { HistoryScreen(navController) }
                     composable("youractivity"){ YourActivity(navController) }
 //                    composable("yourpostedtrips") { TripHistory(navController) }
 //                    composable("yourpostedrequests") { RequestHistory(navController) }

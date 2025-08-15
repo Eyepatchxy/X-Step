@@ -1,5 +1,6 @@
 package com.service.x_step.ui.screens
 
+import android.nfc.cardemulation.CardEmulation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -138,7 +139,8 @@ fun PostRequest (
                 modifier = Modifier
                     .padding(16.dp)
                     .shadow(4.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                shape = 
 
                 ) {
 
@@ -155,7 +157,8 @@ fun PostRequest (
                         "Item Details :",
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 23.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
                     )
 
                     underlinedFormField(item, { item = it }, "Item")
