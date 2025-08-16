@@ -34,12 +34,12 @@ val Typography = Typography(
     ),
 
     bodyMedium = TextStyle(
-        fontSize = 25.sp,
+        fontSize = 30.sp,
         fontWeight = FontWeight.Bold,
         color = Color.White
     ),
     bodySmall = TextStyle(
-        fontSize = 15.sp,
+        fontSize = 20.sp,
         color = Color.White
     )
 

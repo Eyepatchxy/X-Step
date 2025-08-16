@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -99,15 +100,16 @@ fun YourActivity( navController: NavController ){
 
             Spacer(modifier = Modifier.padding(6.dp))
 
-            Tabs()
+            Tabs(navController)
         }
     }
 }
 
 @Composable
-fun Tabs(){
+fun Tabs(navController: NavController){
     val tabs = listOf("Trips", "Request")
     val pagerState = rememberPagerState( 0, 0F) { 2 }
+    val scope = rememberCoroutineScope()
 
     Column {
         TabRow(
@@ -119,7 +121,7 @@ fun Tabs(){
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = {
-                        CoroutineScope(Dispatchers.Main).launch {
+                        scope.launch {
                             pagerState.animateScrollToPage(index)
                         }
                     },
@@ -135,8 +137,8 @@ fun Tabs(){
             state = pagerState
         ) { page ->
             when(page){
-                0 -> TripHistory( rememberNavController() )
-                1 -> RequestHistory( rememberNavController() )
+                0 -> TripHistory( navController )
+                1 -> RequestHistory( navController )
             }
         }
     }

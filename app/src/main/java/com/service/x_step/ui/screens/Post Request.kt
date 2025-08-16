@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -35,8 +37,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -137,12 +143,10 @@ fun PostRequest (
 
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .shadow(4.dp),
+//                    .clip(RoundedCornerShape(16.dp))
+                    .padding(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-                shape = 
-
-                ) {
+            ) {
 
                 Column(
                     modifier = Modifier
@@ -156,10 +160,11 @@ fun PostRequest (
                     Text(
                         "Item Details :",
                         fontFamily = FontFamily.SansSerif,
-                        fontSize = 23.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
+
+                    Spacer(Modifier.padding(5.dp))
 
                     underlinedFormField(item, { item = it }, "Item")
 
@@ -207,6 +212,12 @@ fun PostRequest (
 
                         Button(
                             onClick = {
+                                if (item.isBlank() || itemdes.isBlank() || cost.isBlank() || pickuploc.isBlank() || itemSize.isBlank()) {
+                                    coroutineScope.launch {
+                                        snackbarHostState.showSnackbar("Please fill all required fields.")
+                                    }
+                                    return@Button
+                                }
 
                                 itemSize = when (itemSize) {
                                     "Large (Multiple Backpacks)" -> "Large"

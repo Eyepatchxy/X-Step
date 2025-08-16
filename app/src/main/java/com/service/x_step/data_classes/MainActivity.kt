@@ -49,9 +49,10 @@ class MainActivity : ComponentActivity() {
                     composable("profile") { Profile(navController) }
                     composable("editprofile") { EditProfile(navController) }
 //                    composable("history") { HistoryScreen(navController) }
-                    composable("youractivity"){ YourActivity(navController) }
 //                    composable("yourpostedtrips") { TripHistory(navController) }
 //                    composable("yourpostedrequests") { RequestHistory(navController) }
+                    composable("youractivity"){ YourActivity(navController) }
+
                     composable("tripDetail/{tripId}") { backStackEntry ->
                         val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
                         TripDetails( tripId = tripId, navController = navController)
