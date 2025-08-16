@@ -148,83 +148,89 @@ fun PostATrip(navController: NavController) {
                 thickness = 2.dp
             )
 
-            Spacer(modifier = Modifier.padding(15.dp))
+//            Spacer(modifier = Modifier.padding(15.dp))
 
             //Icon
 
-
-            Card(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .shadow(4.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-
+            Column(
+                modifier = Modifier.padding(30.dp)
             ) {
-                Column(
+
+                Card(
                     modifier = Modifier
-                        .padding(15.dp)
-                        .width(300.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    //Spacer(modifier = Modifier.padding(1.dp))
 
-                    Text("Trip Details :",
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 23.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                        .padding(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.Transparent),
 
-                    Spacer(modifier = Modifier.padding(1.dp))
+                    ) {
+                    Column(
+                        modifier = Modifier
+//                        .width(300.dp)
+                            .padding(15.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        //Spacer(modifier = Modifier.padding(1.dp))
 
-                    underlinedFormField(to, { to = it }, "Destination")
+                        Text(
+                            "Trip Details :",
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
 
-                    underlinedFormField(from, { from = it }, "Starting Place")
+                        Spacer(modifier = Modifier.padding(1.dp))
 
-                    DatePickerField(
-                        selectedDate = date,
-                        onDateSelected = { date = it }
-                    )
+                        underlinedFormField(to, { to = it }, "Destination")
 
-                    //underlinedFormField(departureTime, { departureTime = it }, "Time of Departure")
-                    TimePickerField(
-                        selectedTime = departureTime,
-                        onTimeSelected = { departureTime = it },
-                        label = "Time of Departure"
-                    )
+                        underlinedFormField(from, { from = it }, "Starting Place")
 
-                    //underlinedFormField(arrivalTime, { arrivalTime = it }, "Estimated Time of Arrival")
-                    TimePickerField(
-                        selectedTime = arrivalTime,
-                        onTimeSelected = { arrivalTime = it },
-                        label = "Estimated Time of Arrival"
-                    )
+                        DatePickerField(
+                            selectedDate = date,
+                            onDateSelected = { date = it }
+                        )
 
-                    ///underlinedFormField(itemSize, { itemSize = it }, "Expected Request Item Size")
-                    DropdownMenuField(
-                        label = "Item Size",
-                        options = itemSizeOptions,
-                        selectedOption = itemSize,
-                        onOptionSelected = { itemSize = it }
-                    )
+                        //underlinedFormField(departureTime, { departureTime = it }, "Time of Departure")
+                        TimePickerField(
+                            selectedTime = departureTime,
+                            onTimeSelected = { departureTime = it },
+                            label = "Time of Departure"
+                        )
 
-                    /*toggleSwitch(
+                        //underlinedFormField(arrivalTime, { arrivalTime = it }, "Estimated Time of Arrival")
+                        TimePickerField(
+                            selectedTime = arrivalTime,
+                            onTimeSelected = { arrivalTime = it },
+                            label = "Estimated Time of Arrival"
+                        )
+
+                        ///underlinedFormField(itemSize, { itemSize = it }, "Expected Request Item Size")
+                        DropdownMenuField(
+                            label = "Item Size",
+                            options = itemSizeOptions,
+                            selectedOption = itemSize,
+                            onOptionSelected = { itemSize = it }
+                        )
+
+                        underlinedFormField(notes, { notes = it }, "Description (Optional)")
+
+                        /*toggleSwitch(
                         label = "Is this a return trip?",
                         checked = roundTrip,
                         onCheckedChange = { roundTrip = it }
                     )*/
 
-                    toggleSwitch(
-                        label = "Use default UPI Id?",
-                        checked = show,
-                        onCheckedChange = { show = it }
-                    )
+                        toggleSwitch(
+                            label = "Use default UPI Id?",
+                            checked = show,
+                            onCheckedChange = { show = it }
+                        )
 
 
-                    if (show){
-                        underlinedFormField(tempUpiId, {tempUpiId = it}, "Temporary UPI Id")
-                    }
+                        if (show) {
+                            underlinedFormField(tempUpiId, { tempUpiId = it }, "Temporary UPI Id")
+                        }
 
-                    /*
+                        /*
                     toggleSwitch(
                         label = "Pay on delivery?",
                         checked = cod,
@@ -232,91 +238,88 @@ fun PostATrip(navController: NavController) {
                     )
                     */
 
-                    //underlinedFormField(allowedItems, { allowedItems = it }, "Item Restrictions (Optional)")
+                        //underlinedFormField(allowedItems, { allowedItems = it }, "Item Restrictions (Optional)")
 
-                    underlinedFormField(notes, { notes = it }, "Description (Optional)")
-
-                    Spacer(modifier = Modifier.padding(15.dp))
+                        Spacer(modifier = Modifier.padding(15.dp))
 
 
 
 
-                    Button(
-                        onClick = {
+                        Button(
+                            onClick = {
 
-                            if (from.isBlank() || to.isBlank() || date.isBlank() || departureTime.isBlank() || itemSize.isBlank()) {
-                                coroutineScope.launch {
-                                    snackbarHostState.showSnackbar("Please fill all required fields.")
-                                }
-                                return@Button
-                            }
-
-                            val triptime = try {
-                                millicon(date, departureTime)
-                            } catch (e: Exception) {
-                                coroutineScope.launch {
-                                    snackbarHostState.showSnackbar("Invalid date or time format.")
-                                }
-                                return@Button
-                            }
-
-                            itemSize = when (itemSize) {
-                                "Large (Multiple Backpacks)" -> "Large"
-                                "Medium (Backpack)" -> "Medium"
-                                "Small (Handbag)" -> "Small"
-                                else -> itemSize
-                            }
-
-                            if (show){
-                                tripUpiId = tempUpiId
-                            }
-                            else{
-                                tripUpiId = permUpiId
-                            }
-
-                            val tripData = hashMapOf(
-                                "postTime" to System.currentTimeMillis(),
-                                "startLoc" to from,
-                                "endLoc" to to,
-                                "tripDate" to date,
-                                "tripStartTime" to departureTime,
-                                "tripArrivalTime" to arrivalTime,
-                                "roundTrip" to roundTrip,
-                                "cod" to cod,
-                                "itemSize" to itemSize,
-                                "description" to notes,
-                                "userId" to uid,
-                                "triptime" to triptime,
-                                "upiId" to tripUpiId
-                            )
-
-
-                            db.collection("trip")
-                                .add(tripData)
-                                .addOnSuccessListener { docRef ->
-                                    val tripId = docRef.id
-                                    docRef.update("tripId", tripId)
-                                    navController.navigate("triplist")
+                                if (from.isBlank() || to.isBlank() || date.isBlank() || departureTime.isBlank() || itemSize.isBlank()) {
                                     coroutineScope.launch {
-                                        snackbarHostState.showSnackbar("Your Trip has been saved.")
+                                        snackbarHostState.showSnackbar("Please fill all required fields.")
                                     }
-                                }
-                                .addOnFailureListener { exception ->
-                                    errorMessage = exception.message
+                                    return@Button
                                 }
 
-                        },
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(15.dp)
-                            .width(150.dp)
-                            .height(50.dp)
-                    ) {
-                        Text("Post")
+                                val triptime = try {
+                                    millicon(date, departureTime)
+                                } catch (e: Exception) {
+                                    coroutineScope.launch {
+                                        snackbarHostState.showSnackbar("Invalid date or time format.")
+                                    }
+                                    return@Button
+                                }
+
+                                itemSize = when (itemSize) {
+                                    "Large (Multiple Backpacks)" -> "Large"
+                                    "Medium (Backpack)" -> "Medium"
+                                    "Small (Handbag)" -> "Small"
+                                    else -> itemSize
+                                }
+
+                                if (show) {
+                                    tripUpiId = tempUpiId
+                                } else {
+                                    tripUpiId = permUpiId
+                                }
+
+                                val tripData = hashMapOf(
+                                    "postTime" to System.currentTimeMillis(),
+                                    "startLoc" to from,
+                                    "endLoc" to to,
+                                    "tripDate" to date,
+                                    "tripStartTime" to departureTime,
+                                    "tripArrivalTime" to arrivalTime,
+                                    "roundTrip" to roundTrip,
+                                    "cod" to cod,
+                                    "itemSize" to itemSize,
+                                    "description" to notes,
+                                    "userId" to uid,
+                                    "triptime" to triptime,
+                                    "upiId" to tripUpiId
+                                )
+
+
+                                db.collection("trip")
+                                    .add(tripData)
+                                    .addOnSuccessListener { docRef ->
+                                        val tripId = docRef.id
+                                        docRef.update("tripId", tripId)
+                                        navController.navigate("triplist")
+                                        coroutineScope.launch {
+                                            snackbarHostState.showSnackbar("Your Trip has been saved.")
+                                        }
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        errorMessage = exception.message
+                                    }
+
+                            },
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(15.dp)
+                                .width(150.dp)
+                                .height(50.dp)
+                        ) {
+                            Text("Post")
+                        }
                     }
                 }
             }
-
         }
     }
 }

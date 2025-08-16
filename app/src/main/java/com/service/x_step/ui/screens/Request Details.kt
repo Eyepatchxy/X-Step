@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -131,8 +132,8 @@ fun RequestDetails(
                     req?.item?.let {
                         Text(
                             text = it,
-                            fontSize = 35.sp,
                             fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
 
@@ -143,43 +144,43 @@ fun RequestDetails(
                     ) {
 
                         Row {
-                            Text("Description :")
+                            Text("Description :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${request!!.itemDesc}")
+                            Text("${request!!.itemDesc}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
 
 
                         Row {
-                            Text("Estimated Cost :")
+                            Text("Estimated Cost :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${request!!.cost}")
+                            Text("${request!!.cost}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
 
 
                         Row {
-                            Text("Pickup Location :")
+                            Text("Pickup Location :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${request!!.pickupLoc}")
+                            Text("${request!!.pickupLoc}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
 
                         Row {
-                            Text("Item Size :")
+                            Text("Item Size :", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.weight(1f))
 
-                            Text("${request!!.itemSize}")
+                            Text("${request!!.itemSize}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
                         }
@@ -187,13 +188,14 @@ fun RequestDetails(
 
                         if (request?.status == true) {
                             Row {
-                                Text("Status :")
+                                Text("Status :", style = MaterialTheme.typography.bodySmall)
 
                                 Spacer(modifier = Modifier.weight(1f))
 
                                 Text(
                                     text = "Confirmed",
-                                    color = Color.Green
+                                    color = Color.Green,
+                                    fontSize = 20.sp
                                 )
 
                                 Spacer(modifier = Modifier.padding(15.dp))
@@ -201,13 +203,14 @@ fun RequestDetails(
                         }
                         if (request?.status == null) {
                             Row {
-                                Text("Status :")
+                                Text("Status :", style = MaterialTheme.typography.bodySmall)
 
                                 Spacer(modifier = Modifier.weight(1f))
 
                                 Text(
                                     text = "Pending",
-                                    color = Color.Gray
+                                    color = Color.Gray,
+                                    fontSize = 20.sp
                                 )
 
                                 Spacer(modifier = Modifier.padding(15.dp))
@@ -215,13 +218,14 @@ fun RequestDetails(
                         }
                         if (request?.status == false) {
                             Row {
-                                Text("Status :")
+                                Text("Status :", style = MaterialTheme.typography.bodySmall)
 
                                 Spacer(modifier = Modifier.weight(1f))
 
                                 Text(
                                     text = "Rejected",
-                                    color = Color.Red
+                                    color = Color.Red,
+                                    fontSize = 20.sp
                                 )
 
                                 Spacer(modifier = Modifier.padding(15.dp))

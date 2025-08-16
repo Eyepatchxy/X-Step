@@ -89,7 +89,7 @@ fun RequestList(
 
                 navigationIcon = {
                     IconButton(
-                        onClick = { navController.navigate("yourpostedtrips") }
+                        onClick = { navController.navigate("youractivity") }
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBackIos,

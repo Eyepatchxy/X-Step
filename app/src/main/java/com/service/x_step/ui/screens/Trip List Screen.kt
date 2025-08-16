@@ -66,7 +66,7 @@ fun TripListScreen(navController: NavController) {
                     containerColor = scafColor
                 ),
                 title = { Text(
-                    text = "Trip",
+                    text = "TripList",
                     style = MaterialTheme.typography.titleLarge) },
 
                 actions = {
@@ -99,7 +99,8 @@ fun TripListScreen(navController: NavController) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("postatrip")},
-                containerColor = Color.White
+                containerColor = Color.White,
+                modifier = Modifier.padding(15.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

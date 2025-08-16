@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,7 +21,9 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -107,6 +110,7 @@ fun enterTextField(
         trailingIcon = {
             Icon(imageVector = Icons.Default.ChevronRight,
                 contentDescription = "Submit",
+                tint = Color.White,
                 modifier = Modifier.clickable{
                     if (userId != null) {
                         FirebaseFirestore.getInstance().collection("user").document(userId)
@@ -119,11 +123,16 @@ fun enterTextField(
                 }
             )
         },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
-            focusedIndicatorColor = Color.DarkGray,
-            unfocusedIndicatorColor = Color.Gray,
-            disabledIndicatorColor = Color.LightGray
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            focusedIndicatorColor = Color.White,
+            focusedLabelColor = Color.White,
+            unfocusedContainerColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.White,
+            unfocusedLabelColor = Color.White,
+            disabledContainerColor = Color.Transparent,
+            disabledIndicatorColor = Color.LightGray,
+            disabledLabelColor = Color.LightGray
         )
     )
 }
@@ -138,12 +147,12 @@ fun underlinedFormField(
     TextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label) },
+        label = { Text( text = label, style = MaterialTheme.typography.bodySmall ) },
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color.Transparent,
-            focusedIndicatorColor = Color.DarkGray,
-            unfocusedIndicatorColor = Color.DarkGray,
-            disabledIndicatorColor = Color.LightGray
+            focusedIndicatorColor = Color.White,
+            unfocusedIndicatorColor = Color.LightGray,
+            disabledIndicatorColor = Color.Gray
         )
     )
 }
@@ -207,11 +216,15 @@ fun DatePickerField(selectedDate: String, onDateSelected: (String) -> Unit) {
             label = { Text("Select Date") },
             enabled = false,
             colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.White,
+                focusedLabelColor = Color.White,
+                unfocusedContainerColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.White,
+                unfocusedLabelColor = Color.White,
                 disabledContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.DarkGray,
-                disabledIndicatorColor = Color.DarkGray,
-                disabledLabelColor = Color.Gray,
-                disabledTextColor = Color.Black,
+                disabledIndicatorColor = Color.LightGray,
+                disabledLabelColor = Color.LightGray
             )
         )
     }
@@ -250,11 +263,15 @@ fun TimePickerField(
             enabled = false,
             label = { Text(label) },
             colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.White,
+                focusedLabelColor = Color.White,
+                unfocusedContainerColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.White,
+                unfocusedLabelColor = Color.White,
                 disabledContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.DarkGray,
-                disabledIndicatorColor = Color.DarkGray,
-                disabledLabelColor = Color.Gray,
-                disabledTextColor = Color.Black
+                disabledIndicatorColor = Color.LightGray,
+                disabledLabelColor = Color.LightGray
             )
         )
     }
@@ -272,8 +289,7 @@ fun DropdownMenuField(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
-        //tint = Color.Transparent
+        onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
             value = selectedOption,
@@ -286,22 +302,26 @@ fun DropdownMenuField(
             modifier = Modifier.menuAnchor(),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.White,
+                focusedLabelColor = Color.White,
                 unfocusedContainerColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.White,
+                unfocusedLabelColor = Color.White,
                 disabledContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.DarkGray,
-                unfocusedIndicatorColor = Color.Gray,
-                disabledIndicatorColor = Color.Gray,
-                focusedLabelColor = Color.DarkGray,
-                unfocusedLabelColor = Color.Gray,
+                disabledIndicatorColor = Color.LightGray,
+                disabledLabelColor = Color.LightGray
             )
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .background(color = Color.Transparent)
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
+                    modifier = Modifier.background(Color.Transparent),
                     text = { Text(option) },
                     onClick = {
                         onOptionSelected(option)
@@ -326,13 +346,22 @@ fun toggleSwitch(
     ) {
         Text(
             text = label,
+            style = MaterialTheme.typography.bodySmall
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         Switch(
             checked = checked,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Color.Black,                       // circle color when ON
+                checkedTrackColor = Color.White,                       // background track when ON
+                uncheckedThumbColor = Color.Black,                     // circle color when OFF
+                uncheckedTrackColor = Color.White,                     // background track when OFF
+                checkedBorderColor = Color.Transparent,                // border when ON
+                uncheckedBorderColor = Color.Transparent
+            )
         )
     }
 }
