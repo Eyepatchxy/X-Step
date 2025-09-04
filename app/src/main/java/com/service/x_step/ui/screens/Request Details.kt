@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.firestore.FirebaseFirestore
 import com.service.x_step.Request
+import com.service.x_step.data_classes.FirebaseFetchRequests
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -51,11 +52,12 @@ fun RequestDetails(
     navController: NavController
 ) {
 
+    val ff = remember { FirebaseFetchRequests() }
     var request by remember { mutableStateOf<Request?>(null) }
     var errormessage by remember { mutableStateOf("") }
 
     LaunchedEffect(reqId) {
-        fetchrequestbyid(reqId) { req ->
+        ff.fetchrequestbyid(reqId) { req ->
             request = req
         }
     }
@@ -245,18 +247,18 @@ fun RequestDetails(
                                         FirebaseFirestore.getInstance().collection("request")
                                             .document(reqId)
                                             .update("status", true)
-                                            .addOnSuccessListener {
+                                            .addOnSuccessListener {/*
+                                                sendStatusNotificationToUser(
+                                                    targetUid = reqId,  // this should be the receiver's UID
+                                                    isConfirmed = true,
+                                                    requestId = reqId
+                                                )*/
                                                 navController.navigate("requestlist/${tripId}")
                                             }
                                             .addOnFailureListener { exception ->
                                                 errormessage = exception.message.toString()
                                                 navController.navigate("requestlist/${tripId}")
                                             }
-                                        sendNotification(
-                                            token = req?.rqUser,
-                                            title = "Trip Confirmed",
-                                            body = "Your trip request has been accepted!"
-                                        )
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
                                 ) {
@@ -272,18 +274,18 @@ fun RequestDetails(
                                         FirebaseFirestore.getInstance().collection("request")
                                             .document(reqId)
                                             .update("status", false)
-                                            .addOnSuccessListener {
+                                            .addOnSuccessListener {/*
+                                                sendStatusNotificationToUser(
+                                                    targetUid = reqId,  // this should be the receiver's UID
+                                                    isConfirmed = true,
+                                                    requestId = reqId
+                                                )*/
                                                 navController.navigate("requestlist/${tripId}")
                                             }
                                             .addOnFailureListener { exception ->
                                                 errormessage = exception.message.toString()
                                                 navController.navigate("requestlist/${tripId}")
                                             }
-                                        sendNotification(
-                                            token = req?.rqUser,
-                                            title = "Trip Rejected",
-                                            body = "Sorry, your trip request was declined."
-                                        )
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                                 ) {

@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.service.x_step.Request
+import com.service.x_step.data_classes.FirebaseFetchRequests
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -56,9 +57,11 @@ fun RequestList(
     var errormessage by remember { mutableStateOf<String?>("") }
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val ff = remember { FirebaseFetchRequests() }
+
 
     LaunchedEffect(tripId) {
-        fetchrequestbytripId(tripId) { list ->
+        ff.fetchrequestbytripId(tripId) { list ->
             requestList = list
         }
     }
@@ -126,6 +129,7 @@ fun RequestList(
                 contentPadding = PaddingValues(10.dp)
             ) {
                 items(requestList) { request ->
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

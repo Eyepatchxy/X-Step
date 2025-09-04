@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 // Set of Material typography styles to start with
 val Typography = Typography(
     titleLarge = TextStyle(
-        fontSize = 50.sp,
+        fontSize = 45.sp,
         fontWeight = FontWeight.Bold,
         color = FontBlue,
         shadow = Shadow(
@@ -23,7 +23,7 @@ val Typography = Typography(
         )
     ),
     titleMedium = TextStyle(
-        fontSize = 30.sp,
+        fontSize = 35.sp,
         fontWeight = FontWeight.Bold,
         color = FontBlue,
         shadow = Shadow(

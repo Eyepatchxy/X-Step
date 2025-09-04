@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.service.x_step.Trip
+import com.service.x_step.data_classes.FirebaseFetchRequests
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -49,10 +50,12 @@ fun TripHistory(navController: NavController){
 
     var tripList by remember { mutableStateOf<List<Trip>>(emptyList()) }
     val uid = FirebaseAuth.getInstance().currentUser?.uid
+    val ff = remember { FirebaseFetchRequests() }
+
 
     LaunchedEffect(Unit) {
         if (uid != null) {
-            fetchtripbyuser(uid){ list ->
+            ff.fetchtripbyuser(uid){ list ->
                 tripList = list
             }
         }

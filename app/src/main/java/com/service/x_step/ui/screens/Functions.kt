@@ -3,7 +3,6 @@ package com.service.x_step.ui.screens
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,30 +36,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.service.x_step.API.RetrofitClient
-import com.service.x_step.Request
-import com.service.x_step.Trip
-import com.service.x_step.data_classes.NotificationData
-import okhttp3.ResponseBody
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-
-fun dopasswordsmatch( password: String, confirmpassword: String ): Boolean {
-    return password == confirmpassword
-}
-
-fun emailconstraint( email: String ): Boolean{
-    return email.endsWith("@sggs.ac.in", ignoreCase = true)
-}
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -148,6 +133,7 @@ fun underlinedFormField(
         value = value,
         onValueChange = onValueChange,
         label = { Text( text = label, style = MaterialTheme.typography.bodySmall ) },
+        textStyle = TextStyle(color = Color.White),
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color.Transparent,
             focusedIndicatorColor = Color.White,
@@ -215,6 +201,7 @@ fun DatePickerField(selectedDate: String, onDateSelected: (String) -> Unit) {
             readOnly = true,
             label = { Text("Select Date") },
             enabled = false,
+            textStyle = TextStyle(color = Color.White),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.White,
@@ -262,6 +249,7 @@ fun TimePickerField(
             readOnly = true,
             enabled = false,
             label = { Text(label) },
+            textStyle = TextStyle(color = Color.White),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.White,
@@ -300,6 +288,7 @@ fun DropdownMenuField(
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
             modifier = Modifier.menuAnchor(),
+            textStyle = TextStyle(color = Color.White),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.White,
@@ -366,98 +355,12 @@ fun toggleSwitch(
     }
 }
 
-fun fetchtrips(
-    list : (List<Trip>) -> Unit
-){
-    val now = System.currentTimeMillis()
-
-    FirebaseFirestore.getInstance().collection("trip")
-        .whereGreaterThanOrEqualTo("triptime", now)
-        .get()
-        .addOnSuccessListener { result ->
-            val trips = result.map { doc ->
-                Trip(
-                    id = doc.id,
-                    userId = doc.getString("userId") ?: "",
-                    posttime = doc.getLong("postTime") ?: 0L,
-                    from = doc.getString("startLoc") ?: "",
-                    to = doc.getString("endLoc") ?: "",
-                    date = doc.getString("tripDate") ?: "",
-                    starttime = doc.getString("tripStartTime") ?: "",
-                    arrivaltime = doc.getString("tripArrivalTime") ?: "",
-                    itemSize = doc.getString("itemSize") ?: "",
-                    description = doc.getString("description") ?: "",
-                    triptime = doc.getLong("triptime") ?: 0L
-                )
-            }
-            list(trips)
-            Log.d("FIREBASE", "Fetched: docs")
-        }
-        .addOnFailureListener { e ->
-            Log.e("FIREBASE", "Error fetching", e)
-        }
+fun dopasswordsmatch( password: String, confirmpassword: String ): Boolean {
+    return password == confirmpassword
 }
 
-fun fetchtripbyid(
-    tripId : String,
-    onResult : (Trip?) -> Unit
-){
-    FirebaseFirestore.getInstance().collection("trip").document(tripId)
-        .get()
-        .addOnSuccessListener { doc ->
-            if (doc.exists()) {
-                val trip = Trip(
-                    id = doc.id,
-                    userId = doc.getString("userId") ?: "",
-                    posttime = doc.getLong("postTime") ?: 0L,
-                    from = doc.getString("startLoc") ?: "",
-                    to = doc.getString("endLoc") ?: "",
-                    date = doc.getString("tripDate") ?: "",
-                    starttime = doc.getString("tripStartTime") ?: "",
-                    arrivaltime = doc.getString("tripArrivalTime") ?: "",
-                    itemSize = doc.getString("itemSize") ?: "",
-                    description = doc.getString("description") ?: "",
-                    triptime = doc.getLong("triptime") ?: 0L
-                )
-                onResult(trip)
-            }
-            else{
-                onResult(null)
-            }
-        }
-        .addOnFailureListener{
-            onResult(null)
-        }
-}
-
-fun fetchtripbyuser(
-    uid : String,
-    list : (List<Trip>) -> Unit
-){
-    FirebaseFirestore.getInstance().collection("trip")
-        .whereEqualTo("userId", uid)
-        .get()
-        .addOnSuccessListener { result ->
-            val trips = result.map { doc ->
-                Trip(
-                    id = doc.id,
-                    userId = doc.getString("userId") ?: "",
-                    posttime = doc.getLong("postTime") ?: 0L,
-                    from = doc.getString("startLoc") ?: "",
-                    to = doc.getString("endLoc") ?: "",
-                    date = doc.getString("tripDate") ?: "",
-                    starttime = doc.getString("tripStartTime") ?: "",
-                    arrivaltime = doc.getString("tripArrivalTime") ?: "",
-                    itemSize = doc.getString("itemSize") ?: "",
-                    description = doc.getString("description") ?: "",
-                    triptime = doc.getLong("triptime") ?: 0L
-                )
-            }
-            list(trips)
-        }
-        .addOnFailureListener{
-            list(emptyList())
-        }
+fun emailconstraint( email: String ): Boolean{
+    return email.endsWith("@sggs.ac.in", ignoreCase = true)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -485,150 +388,4 @@ fun formatDateForParsing(date: String): String {
 fun formatTimeForParsing(time: String): String {
     val parts = time.split(":")
     return parts.joinToString(":") { it.padStart(2, '0') }
-}
-
-fun fetchrequests(
-    list: (List<Request>) -> Unit
-) {
-    FirebaseFirestore.getInstance().collection("request")
-        .get()
-        .addOnSuccessListener { result ->
-            val request = result.map { doc ->
-                Request(
-                    reqId = doc.getString("reqId") ?: "",
-                    tripId = doc.getString("tripId") ?: "",
-                    rqTime = doc.getLong("rqTime") ?: 0L,
-                    rqUser = doc.getString("rqUser") ?: "",
-                    item = doc.getString("item") ?: "",
-                    itemDesc = doc.getString("itemDesc") ?: "",
-                    itemSize = doc.getString("itemSize") ?: "",
-                    pickupLoc = doc.getString("pickupLoc") ?: "",
-                    cost = doc.getString("cost") ?: "",
-                    status = doc.getBoolean("status")
-                )
-            }
-            list(request)
-        }
-        .addOnFailureListener {
-            list(emptyList())
-        }
-}
-
-fun fetchrequestbyid(
-    reqId : String,
-    onResult: (Request?) -> Unit
-){
-    FirebaseFirestore.getInstance().collection("request").document(reqId)
-        .get()
-        .addOnSuccessListener { doc ->
-            if (doc.exists()){
-                val request = Request(
-                    reqId = doc.id,
-                    tripId = doc.getString("tripId") ?: "",
-                    rqTime = doc.getLong("rqTime") ?: 0L,
-                    rqUser = doc.getString("rqUser") ?: "",
-                    item = doc.getString("item") ?: "",
-                    itemSize = doc.getString("itemSize") ?: "",
-                    itemDesc = doc.getString("itemDesc") ?: "",
-                    pickupLoc = doc.getString("pickupLoc") ?: "",
-                    cost = doc.getString("cost") ?: "",
-                    status = doc.getBoolean("status")
-                    )
-                onResult(request)
-            }
-            else{
-                onResult(null)
-            }
-        }
-        .addOnFailureListener{
-            onResult(null)
-        }
-}
-
-fun fetchrequestbytripId(
-    tripId: String,
-    list: (List<Request>) -> Unit
-) {
-    FirebaseFirestore.getInstance().collection("request")
-        .whereEqualTo("tripId", tripId)
-        .get()
-        .addOnSuccessListener { result ->
-            val request = result.map { doc ->
-                Request(
-                    reqId = doc.getString("reqId") ?: "",
-                    tripId = doc.getString("tripId") ?: "",
-                    rqTime = doc.getLong("rqTime") ?: 0L,
-                    rqUser = doc.getString("rqUser") ?: "",
-                    item = doc.getString("item") ?: "",
-                    itemDesc = doc.getString("itemDesc") ?: "",
-                    itemSize = doc.getString("itemSize") ?: "",
-                    pickupLoc = doc.getString("pickupLoc") ?: "",
-                    cost = doc.getString("cost") ?: "",
-                    status = doc.getBoolean("status")
-                )
-            }
-            list(request)
-        }
-        .addOnFailureListener {
-            list(emptyList())
-        }
-}
-
-fun fetchrequestbyuser(
-    uid : String,
-    list : (List<Request>) -> Unit
-){
-    FirebaseFirestore.getInstance().collection("request")
-        .whereEqualTo("rqUser", uid)
-        .get()
-        .addOnSuccessListener { result ->
-            val requests = result.map { doc ->
-                Request(
-                    reqId = doc.getString("reqId") ?: "",
-                    tripId = doc.getString("tripId") ?: "",
-                    rqTime = doc.getLong("rqTime") ?: 0L,
-                    rqUser = doc.getString("rqUser") ?: "",
-                    item = doc.getString("item") ?: "",
-                    itemDesc = doc.getString("itemDesc") ?: "",
-                    itemSize = doc.getString("itemSize") ?: "",
-                    pickupLoc = doc.getString("pickupLoc") ?: "",
-                    cost = doc.getString("cost") ?: "",
-                    status = doc.getBoolean("status")
-                )
-            }
-            list(requests)
-        }
-        .addOnFailureListener{
-            list(emptyList())
-        }
-}
-
-fun sendNotification(
-    token: String?,
-    title: String,
-    body: String
-){
-    val notificationData = NotificationData(
-        token = token,
-        title = title,
-        body = body
-    )
-
-    RetrofitClient.instance.sendNotification(notificationData)
-        .enqueue(object : retrofit2.Callback<ResponseBody> {
-            override fun onResponse(
-                call: retrofit2.Call<ResponseBody>,
-                response: retrofit2.Response<ResponseBody>
-            ) {
-                if (response.isSuccessful) {
-                    println("Notification sent successfully: ${response.body()?.string()}")
-                } else {
-                    println("Failed to send notification: ${response.code()} - ${response.errorBody()?.string()}")
-                }
-            }
-
-            override fun onFailure(call: retrofit2.Call<ResponseBody>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
 }

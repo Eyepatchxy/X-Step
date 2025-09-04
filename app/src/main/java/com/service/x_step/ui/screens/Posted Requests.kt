@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.service.x_step.Request
+import com.service.x_step.Trip
+import com.service.x_step.data_classes.FirebaseFetchRequests
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -46,13 +48,20 @@ import com.service.x_step.ui.theme.scafColor
 @Composable
 fun RequestHistory( navController: NavController ) {
 
+    var tripList by remember { mutableStateOf<List<Trip>>(emptyList()) }
     var requestList by remember { mutableStateOf<List<Request>>(emptyList()) }
     val uid = FirebaseAuth.getInstance().currentUser?.uid
+    val ff = remember { FirebaseFetchRequests() }
+
 
     LaunchedEffect(uid) {
         if (uid != null) {
-            fetchrequestbyuser(uid){ list ->
+            ff.fetchrequestbyuser(uid){ list ->
                 requestList = list
+            }
+
+            ff.fetchtripbyuser(uid){ list ->
+                tripList = list
             }
         }
     }
@@ -95,7 +104,7 @@ fun RequestHistory( navController: NavController ) {
 
             )
         }
-    ) { innerpadding ->
+    ) { padding ->
 */
         Column (
             modifier = Modifier
@@ -114,6 +123,11 @@ fun RequestHistory( navController: NavController ) {
             ) {
                 items(requestList) { req ->
 
+                    val tripId = req.tripId
+                    val trip = tripList.find { it.id == tripId }
+                    val to = trip?.to ?: " "
+                    val date = trip?.date ?: " "
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -130,14 +144,14 @@ fun RequestHistory( navController: NavController ) {
 
                             Row {
                                 Text(
-                                    text = req.pickupLoc,
+                                    text = to,
                                     style = MaterialTheme.typography.bodySmall
                                 )
 
                                 Spacer(modifier = Modifier.weight(2f))
 
                                 Text(
-                                    text = req.cost,
+                                    text = date,
                                     style = MaterialTheme.typography.bodySmall
                                 )
 

@@ -23,6 +23,7 @@ object AuthManager {
                 val userId = auth.currentUser?.uid
 
                 val userData = hashMapOf(
+                    "uid" to userId,
                     "name" to name,
                     "email" to email,
                     "upiId" to upiId,

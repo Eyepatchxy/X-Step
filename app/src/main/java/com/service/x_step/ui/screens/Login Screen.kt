@@ -34,6 +34,7 @@ fun LoginScreen(navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var token by remember { mutableStateOf("") }
 
 
     Box(
@@ -109,7 +110,7 @@ fun LoginScreen(navController: NavHostController) {
                             FirebaseMessaging.getInstance().token
                                 .addOnCompleteListener { task ->
                                     if (task.isSuccessful){
-                                        val token = task.result
+                                        token = task.result
 
                                         val uid = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -121,6 +122,10 @@ fun LoginScreen(navController: NavHostController) {
                                                 .set( Token(token), SetOptions.merge() )
                                         }
                                     }
+
+
+                                    android.util.Log.d("FCM", "FCM token: $token")
+
                                 }
                         },
                         modifier = Modifier

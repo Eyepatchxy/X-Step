@@ -1,67 +1,64 @@
-import os
 from flask import Flask, request, jsonify
 import firebase_admin
-from firebase_admin import credentials, messaging
-from dotenv import load_dotenv
+from firebase_admin import credentials, firestore, messaging, auth
 
-load_dotenv()
-
-# Initialize Firebase Admin SDK
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 app = Flask(__name__)
 
-@app.route("/send", methods=["POST"])
-def send_notification():
-    data = request.get_json()
-    title = data.get("title")
-    body = data.get("body")
-    token = data.get("token")  # Or use topic instead
-
-    # Construct message
-    message = messaging.Message(
-        notification=messaging.Notification(
-            title=title,
-            body=body
-        ),
-        token=token,  # or use topic='some-topic'
-    )
-
-    # Send message
-    response = messaging.send(message)
-    return jsonify({"message_id": response}), 200
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
-
-from flask import request, jsonify
-from firebase_admin import messaging
-
-@app.route('/send-notification', methods=['POST'])
-def send_notification():
+def verify_id_token_from_header():
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        return None
+    token = auth_header.split(" ", 1)[1]
     try:
-        data = request.get_json()
-        title = data.get('title')
-        body = data.get('body')
-        token = data.get('token')  # can also be "topic"
+        decoded = auth.verify_id_token(token)
+        return decoded["uid"]
+    except Exception:
+        return None
 
-        if not title or not body or not token:
-            return jsonify({'error': 'Missing fields'}), 400
+@app.post("/send-notification")
+def send_notification():
+    caller_uid = verify_id_token_from_header()
+    if not caller_uid:
+        return jsonify({"error":"unauthorized"}), 401
 
-        message = messaging.Message(
-            notification=messaging.Notification(
-                title=title,
-                body=body
-            ),
-            token=token  # use `.topic` instead of `.token` if you want to send to a topic
-        )
+    body = request.get_json(silent=True) or {}
+    to_user_id = body.get("toUserId")
+    title      = body.get("title")
+    msg_body   = body.get("body")
+    data       = body.get("data") or {}
 
-        response = messaging.send(message)
-        return jsonify({'success': True, 'response': response})
+    if not to_user_id or not title or not msg_body:
+        return jsonify({"error":"missing fields"}), 400
 
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+    # Load all tokens for recipient
+    tokens = [doc.id for doc in db.collection("users").document(to_user_id).collection("fcmTokens").stream()]
+    if not tokens:
+        return jsonify({"error":"no tokens for recipient"}), 404
+
+    message = messaging.MulticastMessage(
+        notification=messaging.Notification(title=title, body=msg_body),
+        data={k: str(v) for k, v in data.items()},
+        tokens=tokens,
+        android=messaging.AndroidConfig(priority="high"),
+        apns=messaging.APNSConfig(headers={"apns-priority":"10"})
+    )
+    resp = messaging.send_multicast(message)
+
+    # Clean invalid tokens
+    to_delete = []
+    for i, r in enumerate(resp.responses):
+        if not r.success:
+            code = getattr(r.exception, "code", "")
+            if code in ("registration-token-not-registered", "invalid-argument"):
+                to_delete.append(tokens[i])
+    if to_delete:
+        batch = db.batch()
+        for t in to_delete:
+            batch.delete(db.collection("users").document(to_user_id).collection("fcmTokens").document(t))
+        batch.commit()
+
+    return jsonify({"success": resp.success_count, "failure": resp.failure_count})

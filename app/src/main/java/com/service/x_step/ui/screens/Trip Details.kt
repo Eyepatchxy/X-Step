@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.service.x_step.Trip
+import com.service.x_step.data_classes.FirebaseFetchRequests
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -50,10 +51,11 @@ fun TripDetails(
     tripId : String
 ){
 
+    val ff = remember { FirebaseFetchRequests() }
     var trip by remember { mutableStateOf<Trip?>(null) }
 
     LaunchedEffect(Unit) {
-        fetchtripbyid (tripId) { onResult ->
+        ff.fetchtripbyid (tripId) { onResult ->
             trip = onResult
         }
     }

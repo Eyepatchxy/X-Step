@@ -68,13 +68,13 @@ dependencies {
     implementation(platform(libs.firebase.bom.v3272))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth.ktx)
-
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.messaging.ktx)
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     //Pager
     implementation (libs.material3)
