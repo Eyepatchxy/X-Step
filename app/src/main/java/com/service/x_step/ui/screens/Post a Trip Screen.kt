@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.service.x_step.data_classes.FirebaseFetchRequests
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -62,6 +63,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PostATrip(navController: NavController) {
 
+    val ff = remember { FirebaseFetchRequests() }
     val uid = FirebaseAuth.getInstance().currentUser?.uid
     val itemSizeOptions = listOf("Small (Handbag)", "Medium (Backpack)", "Large (Multiple Backpacks)")
     var from by remember { mutableStateOf("") }
@@ -84,7 +86,7 @@ fun PostATrip(navController: NavController) {
 
     LaunchedEffect(Unit) {
         if (uid != null) {
-            fetchtripbyuser(uid){ list ->
+            ff.fetchtripbyuser(uid){ list ->
                 permUpiId = list.firstOrNull()?.upiId
             }
         }

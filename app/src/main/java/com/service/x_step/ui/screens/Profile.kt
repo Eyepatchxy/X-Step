@@ -78,21 +78,9 @@ fun Profile(navController: NavController){
                         savedupiId = document.getString("upiId") ?: ""
                     }
                 }
-            /*FirebaseFirestore.getInstance().collection("user").document(uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    name = document.getString("name") ?: "User"
-                }
-                .addOnSuccessListener { document->
-                    email = document.getString("email") ?: "Email"
-                }
-                .addOnSuccessListener { document->
-                    savedmobile = document.getString("mobile") ?: ""
-                }
-                .addOnSuccessListener { document->
-                    upiId = document.getString("upiId") ?: ""
-                }*/
         }
+
+
     }
 
 
@@ -129,6 +117,11 @@ fun Profile(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
+
+            HorizontalDivider(
+                color = FontBlue,
+                thickness = 2.dp
+            )
 
             Spacer( modifier = Modifier.padding(40.dp) )
 
@@ -176,6 +169,9 @@ fun Profile(navController: NavController){
                     Spacer(modifier = Modifier.padding(15.dp))
 
                 }
+                Spacer(modifier = Modifier.padding(10.dp))
+
+
             }
 
 

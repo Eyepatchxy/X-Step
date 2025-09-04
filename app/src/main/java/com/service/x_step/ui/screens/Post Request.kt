@@ -52,6 +52,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.service.x_step.Trip
+import com.service.x_step.data_classes.FirebaseFetchRequests
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -76,10 +77,11 @@ fun PostRequest (
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     var errormessage by remember { mutableStateOf<String?> ("null") }
+    val ff = remember { FirebaseFetchRequests() }
 
 
     LaunchedEffect(Unit) {
-        fetchtripbyid(tripId){ onResult ->
+        ff.fetchtripbyid(tripId){ onResult ->
             trip = onResult
         }
     }

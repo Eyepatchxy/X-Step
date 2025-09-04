@@ -45,15 +45,17 @@ import com.service.x_step.Trip
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
+import com.service.x_step.data_classes.FirebaseFetchRequests
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TripListScreen(navController: NavController) {
 
+    val ff = remember { FirebaseFetchRequests() }
     var tripList by remember { mutableStateOf<List<Trip>>(emptyList()) }
 
     LaunchedEffect (Unit) {
-        fetchtrips { list ->
+        ff.fetchtrips { list ->
             tripList = list
         }
     }
