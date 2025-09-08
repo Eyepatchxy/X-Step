@@ -38,8 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 import com.service.x_step.Trip
 import com.service.x_step.data_classes.FirebaseFetchRequests
+import com.service.x_step.data_classes.User
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -52,13 +54,23 @@ fun TripDetails(
 ){
 
     val ff = remember { FirebaseFetchRequests() }
+    val uid = FirebaseAuth.getInstance().currentUser?.uid
     var trip by remember { mutableStateOf<Trip?>(null) }
+    var user by remember { mutableStateOf<User?>(null) }
 
     LaunchedEffect(Unit) {
         ff.fetchtripbyid (tripId) { onResult ->
             trip = onResult
         }
+        if (uid != null) {
+            ff.getUser(uid) { onResult ->
+                user = onResult
+            }
+        }
     }
+
+    val carrierId = trip?.userId
+
 
     Scaffold (
         topBar = {
@@ -185,6 +197,18 @@ fun TripDetails(
                             Text("${trip!!.itemSize}", style = MaterialTheme.typography.bodySmall)
 
                             Spacer(modifier = Modifier.padding(15.dp))
+                        }
+
+                        if (user != null) {
+                            Row() {
+                                Text("Carrier :", style = MaterialTheme.typography.bodySmall)
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                Text( user!!.name, style = MaterialTheme.typography.bodySmall)
+
+                                Spacer(modifier = Modifier.padding(15.dp))
+                            }
                         }
 
                         Row() {

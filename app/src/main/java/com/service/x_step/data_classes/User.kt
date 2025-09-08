@@ -6,5 +6,5 @@ data class User (
     val email : String = "" + "@sggs.ac.in",
     val fcmToken : String = "",
     val mobile : String = "",
-    val upiId : String = "",
+    val upiId : String = ""
 )

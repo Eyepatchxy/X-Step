@@ -30,7 +30,7 @@ import com.service.x_step.ui.screens.TripListScreen
 import com.service.x_step.ui.screens.YourActivity
 import com.service.x_step.ui.theme.XStepTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {              //Use Ladybug 2024.2.1 Patch 2
     @RequiresApi(Build.VERSION_CODES.O)
 
     private val requestPermissionLauncher =

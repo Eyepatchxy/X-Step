@@ -49,6 +49,9 @@ import androidx.navigation.NavController
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.service.x_step.Trip
+import com.service.x_step.data_classes.FirebaseFetchRequests
+import com.service.x_step.data_classes.User
 import com.service.x_step.ui.theme.FontBlue
 import com.service.x_step.ui.theme.backGradient
 import com.service.x_step.ui.theme.scafColor
@@ -59,9 +62,10 @@ import org.intellij.lang.annotations.JdkConstants.BoxLayoutAxis
 @Composable
 fun Profile(navController: NavController){
 
+    val ff = FirebaseFetchRequests()
     val uid = FirebaseAuth.getInstance().currentUser?.uid
-    var name by remember { mutableStateOf("User") }
-    var email by remember { mutableStateOf("Email") }
+    var user by remember { mutableStateOf<User?>(null) }
+
     var savedmobile by remember { mutableStateOf("") }
     var inputmobile by remember { mutableStateOf("") }
     var inputupiId by remember { mutableStateOf("") }
@@ -69,23 +73,19 @@ fun Profile(navController: NavController){
 
      LaunchedEffect (uid) {
         if (uid != null) {
-            FirebaseFirestore.getInstance().collection("user").document(uid)
-                .addSnapshotListener { snapshot, _ ->
-                    snapshot?.let { document ->
-                        name = document.getString("name") ?: "User"
-                        email = document.getString("email") ?: "Email"
-                        savedmobile = document.getString("mobile") ?: ""
-                        savedupiId = document.getString("upiId") ?: ""
-                    }
-                }
+            ff.getUser(uid) { onResult ->
+                user = onResult
+            }
         }
+    }
 
-
+    if (user != null) {
+        savedmobile = user!!.mobile
+        savedupiId = user!!.upiId
     }
 
 
-
-    Scaffold (
+    Scaffold ( 
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -151,27 +151,38 @@ fun Profile(navController: NavController){
 
                         Spacer(modifier = Modifier.padding(10.dp))
 
-                        Text(
-                            text = name,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        if (user != null){
+                            Text(
+                                text = user!!.name,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
 
-                        Spacer(modifier = Modifier.padding(5.dp))
+                            Spacer(modifier = Modifier.padding(5.dp))
 
-                        Text(
-                            text = email,
-                            style = MaterialTheme.typography.bodySmall
-                        )
+                            Text(
+                                text = user!!.email,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                        else {
+                            Text(
+                                text = "User",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+
+                            Spacer(modifier = Modifier.padding(5.dp))
+
+                            Text(
+                                text = "Email",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
 
                         Spacer(modifier = Modifier.padding(10.dp))
-
                     }
                     Spacer(modifier = Modifier.padding(15.dp))
-
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
-
-
             }
 
 
