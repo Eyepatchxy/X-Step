@@ -7,22 +7,33 @@ import com.service.x_step.Trip
 
 class FirebaseFetchRequests {
 
-    fun getUser(uid: String, onResult: (User?) -> Unit){
+    fun getUser(
+        uid: String,
+        onResult: (User?) -> Unit
+    ) {
         FirebaseFirestore.getInstance().collection("user").document(uid)
             .get()
-            .addOnSuccessListener { doc ->
-                if (doc.exists()) {
-                    val user = User(
-                        name = doc.getString("name")
-                        email = doc.getString("email")
-                        fcmToken = doc.getString("fcmToken")
-                        mobile = doc.getString("mobile")
-
+            .addOnSuccessListener { user->
+                if (user.exists()){
+                    val details = User(
+                        uid = user.id,
+                        name = user.getString("name") ?: "User",
+                        email = user.getString("email") ?: "Email",
+                        mobile = user.getString("mobile") ?: "",
+                        fcmToken = user.getString("fcmToken") ?: "",
+                        upiId = user.getString("upiId") ?: ""
                     )
+                    onResult(details)
+                    Log.d("Firebase", "User Fetched successfully.")
                 }
-
+                else{
+                    Log.d("Firebase", "User doesn't exist.")
+                }
             }
-        }
+            .addOnFailureListener{ e ->
+                Log.e("Firebase", "User fetch failed.", e)
+            }
+    }
 
     fun fetchtrips(
         list : (List<Trip>) -> Unit

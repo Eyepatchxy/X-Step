@@ -1,3 +1,11 @@
+http://127.0.0.1:5000
+
+app.py → your Flask API (handles push requests).
+passenger_wsgi.py → entry point for Passenger.
+requirements.txt → list of dependencies.
+
+
+
 from flask import Flask, request, jsonify
 import firebase_admin
 from firebase_admin import credentials, firestore, messaging, auth
