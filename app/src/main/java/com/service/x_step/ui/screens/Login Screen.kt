@@ -114,7 +114,7 @@ fun LoginScreen(navController: NavHostController) {
 
                                         val uid = FirebaseAuth.getInstance().currentUser?.uid
 
-                                        data class Token (val fmcToken: String)
+                                        data class Token (val fcmToken: String)
 
                                         if (uid != null) {
                                             FirebaseFirestore.getInstance().collection("user")
@@ -122,10 +122,7 @@ fun LoginScreen(navController: NavHostController) {
                                                 .set( Token(token), SetOptions.merge() )
                                         }
                                     }
-
-
                                     android.util.Log.d("FCM", "FCM token: $token")
-
                                 }
                         },
                         modifier = Modifier
@@ -154,7 +151,7 @@ fun LoginScreen(navController: NavHostController) {
 
             Text(
                 text = "Forgot Password?",
-                color = Color(0xFF42A5F5),
+                color = Color.Cyan,
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .padding(10.dp)
@@ -166,7 +163,7 @@ fun LoginScreen(navController: NavHostController) {
 
             Text(
                 text = "New to X-Step? Sign Up",
-                color = LinkBlue,
+                color = Color.Cyan,
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .padding(10.dp)

@@ -12,29 +12,30 @@ def send_notification(token, title, body, request_id, status):
             title = title,
             body = body,
         ),
-        data = {
-            "reqId" : request_id,
-            "status" : status
-        },
         token = token
     )
     
-    response = messaging.send(message)
-    print("Notification sent:", response)
+    try:
+        response = messaging.send(message)
+        print("Notification sent:", response)
+    except Exception as e:
+        print(f"Failed to send notification: {e}")
+
 
 def req_handler(col_snapshot, changes, read_time):
     for change in changes:
-        print("📡 Firestore triggered a change")
+        print("Firestore triggered a change")
         doc = change.document.to_dict()
         request_id = change.document.id
+        request_item = doc.get("item")
         new_status = doc.get("status")
 
-        print(f"Status of request {request_id} is changed to {new_status}.")
 
         user_id = doc.get("rqUser")
         user_ref = db.collection("user").document(user_id).get()
         if user_ref.exists:
             fcm_token = user_ref.to_dict().get("fcmToken")
+            print(fcm_token)
             if fcm_token:
                 if new_status is True:
                     send_notification(fcm_token, "Request Confirmed", f"Your Request {request_id} has been confirmed.", request_id, new_status)
@@ -44,7 +45,7 @@ def req_handler(col_snapshot, changes, read_time):
                 print(f"FCM Token not found for {user_id}")
 
 
-col_query = db.collection("requests")
+col_query = db.collection("request")
 col_query.on_snapshot(req_handler)
 
 from flask import Flask
