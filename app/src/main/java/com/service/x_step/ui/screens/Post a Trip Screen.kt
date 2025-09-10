@@ -222,7 +222,7 @@ fun PostATrip(navController: NavController) {
                     )*/
 
                         toggleSwitch(
-                            label = "Use default UPI Id?",
+                            label = "Use custom UPI Id?",
                             checked = show,
                             onCheckedChange = { show = it }
                         )

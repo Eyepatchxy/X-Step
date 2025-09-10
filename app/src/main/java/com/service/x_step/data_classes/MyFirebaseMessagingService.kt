@@ -28,7 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val db = FirebaseFirestore.getInstance()
         // Store tokens per device so multi-device works, and we can clean stale tokens
-        val tokenDoc = db.collection("users").document(uid)
+        val tokenDoc = db.collection("user").document(uid)
             .collection("fcmTokens").document(token)
 
         val data = mapOf(

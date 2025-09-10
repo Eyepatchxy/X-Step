@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.isPopupLayout
 import androidx.navigation.NavController
 import com.google.android.gms.tasks.OnSuccessListener
@@ -202,7 +203,11 @@ fun Profile(navController: NavController){
                     Column(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("Phone :" )
+                        Text(
+                            text = "Phone :" ,
+                            color = Color.White,
+                            fontSize = 20.sp
+                            )
                     }
 
                     Spacer(modifier = Modifier.padding(15.dp))
@@ -210,7 +215,11 @@ fun Profile(navController: NavController){
                     Column(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text(savedmobile)
+                        Text(
+                            text = savedmobile,
+                            color = Color.White,
+                            fontSize = 20.sp
+                        )
                     }
                 }
                 }
@@ -233,7 +242,11 @@ fun Profile(navController: NavController){
                     Column(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("UPI ID :" )
+                        Text(
+                            text = "UPI ID :",
+                            color = Color.White,
+                            fontSize = 20.sp
+                        )
                     }
 
                     Spacer(modifier = Modifier.padding(15.dp))
@@ -241,7 +254,11 @@ fun Profile(navController: NavController){
                     Column(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text(savedupiId)
+                        Text(
+                            text = savedupiId,
+                            color = Color.White,
+                            fontSize = 20.sp
+                        )
                     }
                 }
             }

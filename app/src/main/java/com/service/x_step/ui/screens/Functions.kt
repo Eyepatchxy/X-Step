@@ -40,6 +40,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDateTime
@@ -62,16 +63,27 @@ fun underlinedTextField(
         onValueChange = onValueChange,
         label = { Text(label) },
         singleLine = true,
+        textStyle = TextStyle(
+            color = Color.White,
+            fontSize = 20.sp
+        ),
         trailingIcon = {
-            Icon(imageVector = icon,
-                contentDescription =  description
+            Icon(
+                imageVector = icon,
+                contentDescription =  description,
+                tint = Color.White
             )
         },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
-            focusedIndicatorColor = Color.DarkGray,
-            unfocusedIndicatorColor = Color.Gray,
-            disabledIndicatorColor = Color.LightGray
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            focusedIndicatorColor = Color.White,
+            focusedLabelColor = Color.White,
+            unfocusedContainerColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.White,
+            unfocusedLabelColor = Color.White,
+            disabledContainerColor = Color.Transparent,
+            disabledIndicatorColor = Color.LightGray,
+            disabledLabelColor = Color.LightGray
         )
     )
 }
@@ -92,6 +104,10 @@ fun enterTextField(
         onValueChange = onValueChange,
         label = { Text(label) },
         singleLine = true,
+        textStyle = TextStyle(
+            color = Color.White,
+            fontSize = 20.sp
+        ),
         trailingIcon = {
             Icon(imageVector = Icons.Default.ChevronRight,
                 contentDescription = "Submit",
@@ -133,12 +149,20 @@ fun underlinedFormField(
         value = value,
         onValueChange = onValueChange,
         label = { Text( text = label, style = MaterialTheme.typography.bodySmall ) },
-        textStyle = TextStyle(color = Color.White),
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
+        textStyle = TextStyle(
+            color = Color.White,
+            fontSize = 20.sp
+        ),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
             focusedIndicatorColor = Color.White,
-            unfocusedIndicatorColor = Color.LightGray,
-            disabledIndicatorColor = Color.Gray
+            focusedLabelColor = Color.White,
+            unfocusedContainerColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.White,
+            unfocusedLabelColor = Color.White,
+            disabledContainerColor = Color.Transparent,
+            disabledIndicatorColor = Color.LightGray,
+            disabledLabelColor = Color.LightGray
         )
     )
 }
@@ -157,11 +181,20 @@ fun passwordTextField(
         onValueChange = onPasswordChange,
         label = { Text(label) },
         singleLine = true,
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
-            focusedIndicatorColor = Color.DarkGray,
-            unfocusedIndicatorColor = Color.Gray,
-            disabledIndicatorColor = Color.LightGray
+        textStyle = TextStyle(
+            color = Color.White,
+            fontSize = 20.sp
+        ),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            focusedIndicatorColor = Color.White,
+            focusedLabelColor = Color.White,
+            unfocusedContainerColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.White,
+            unfocusedLabelColor = Color.White,
+            disabledContainerColor = Color.Transparent,
+            disabledIndicatorColor = Color.LightGray,
+            disabledLabelColor = Color.LightGray
         ),
         visualTransformation = if(passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
@@ -169,7 +202,7 @@ fun passwordTextField(
             val description = if (passwordVisible) "Hide Password" else "Show Password"
 
             IconButton(onClick = {passwordVisible = !passwordVisible}) {
-                Icon(imageVector = icon, contentDescription = description)
+                Icon(imageVector = icon, contentDescription = description, tint = Color.White)
             }
         }
     )
@@ -201,7 +234,10 @@ fun DatePickerField(selectedDate: String, onDateSelected: (String) -> Unit) {
             readOnly = true,
             label = { Text("Select Date") },
             enabled = false,
-            textStyle = TextStyle(color = Color.White),
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 20.sp
+            ),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.White,
@@ -249,7 +285,10 @@ fun TimePickerField(
             readOnly = true,
             enabled = false,
             label = { Text(label) },
-            textStyle = TextStyle(color = Color.White),
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 20.sp
+            ),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.White,
@@ -288,7 +327,10 @@ fun DropdownMenuField(
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
             modifier = Modifier.menuAnchor(),
-            textStyle = TextStyle(color = Color.White),
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 20.sp
+            ),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.White,
